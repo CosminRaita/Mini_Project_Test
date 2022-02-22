@@ -9,7 +9,7 @@ public class DBConnection {
 	//Constants used to get access to the database
 	
 	private static final String  driver = "jdbc:sqlserver://localhost:1433";;
-    private static final String  databaseName = ";databaseName=PayStation";
+    private static final String  databaseName = ";databaseName=PayStation;encrypt=true;trustServerCertificate=true";
     
     private static String  userName = "; user=sa";
     private static String password = ";password=secret2022*";

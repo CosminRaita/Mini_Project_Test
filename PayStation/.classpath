@@ -7,6 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Lenovo/OneDrive/Documents/GitHub/Mini_Project_Test/PayStation/mssql-jdbc-10.2.0.jre17.jar"/>
+	<classpathentry kind="lib" path="mssql-jdbc-10.2.0.jre17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
