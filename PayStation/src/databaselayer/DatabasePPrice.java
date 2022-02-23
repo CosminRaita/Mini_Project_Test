@@ -35,10 +35,10 @@ public class DatabasePPrice implements IDbPPrice {
 		try {
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
-			// Todo: Get PPrice object
 			ResultSet rs = stmt.executeQuery(baseSelect);
 			
 			Statement stmt2 = con.createStatement();
+			stmt2.setQueryTimeout(5);
 			ResultSet rs2 = stmt2.executeQuery(selectZone);
 			
 			rs.next();

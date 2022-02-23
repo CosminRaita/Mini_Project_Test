@@ -23,7 +23,6 @@ public class DatabasePBuy implements IDbPBuy {
 
 		String baseInsert = "insert into PBuy (buyTime, duration, payedAmount, pPaystation_id) values ";
 		baseInsert += "(" + "CAST(N'" + sqldate + " " + sqltime + "' AS DateTime), " + parkingDuration + ", " + payedCentAmount + ", " + payStation.getId() + ")";
-		System.out.println(baseInsert);
 
 		try {
 			Statement stmt = con.createStatement();
@@ -68,7 +67,6 @@ public class DatabasePBuy implements IDbPBuy {
 		PreparedStatement pstmt = null;
 
 		String baseDelete = "delete from PBuy where id = ?";
-		System.out.println(baseDelete);
 
 		try {
 			con = DBConnection.getInstance().getDBcon();

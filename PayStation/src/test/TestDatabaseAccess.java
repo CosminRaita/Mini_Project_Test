@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -85,10 +86,12 @@ public class TestDatabaseAccess {
 		
 		
 		Connection con = DBConnection.getInstance().getDBcon();
-
+		
 		ResultSet rs = con.createStatement().executeQuery("SELECT * FROM PBuy WHERE id=(SELECT max(id) FROM PBuy);");
 
 		rs.next();
+		
+
 		
 		
 		PPayStation payStation = tempPBuy.getAssociatedPaystation();
@@ -97,8 +100,11 @@ public class TestDatabaseAccess {
 		assertEquals(payStation.getAmount(), Double.parseDouble(rs.getString(4)), 0);
 		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime().toLocalDate()).toString() + " " 
 		+ java.sql.Time.valueOf(tempPBuy.getBuyTime().toLocalTime()).toString() + ".0", rs.getString(2));
+
+
+		con.createStatement().executeUpdate("DBCC CHECKIDENT ('PBuy', RESEED, " + (tempPBuy.getId()-1) + ")");
 		
-		dbPbuy.deleteParkingBuy(tempPBuy);
+		dbPbuy.deleteParkingBuy(tempPBuy);		
 		
 	}	
 	
