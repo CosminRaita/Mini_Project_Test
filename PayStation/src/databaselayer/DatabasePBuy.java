@@ -21,7 +21,7 @@ public class DatabasePBuy implements IDbPBuy {
 		Connection con = DBConnection.getInstance().getDBcon();
 
 		String baseInsert = "insert into PBuy (buyTime, duration, payedAmount, pPaystation_id) values ";
-		baseInsert += "(" + sqldate + ", " + parkingDuration + ", " + payedCentAmount + ", " + payStation.getId() + ")";
+		baseInsert += "(" + "CAST(N'" + sqldate + " 00:00:00.000' AS DateTime), " + parkingDuration + ", " + payedCentAmount + ", " + payStation.getId() + ")";
 		System.out.println(baseInsert);
 
 		try {

@@ -77,22 +77,22 @@ public class TestDatabaseAccess {
 		
 		// Act
 		dbPbuy.insertParkingBuy(tempPBuy);
-
-		System.out.println("\n" + java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString());
 		
 		Connection con = DBConnection.getInstance().getDBcon();
 
 		ResultSet rs = con.createStatement().executeQuery("SELECT * FROM PBuy WHERE id=(SELECT max(id) FROM PBuy);");
 
 		rs.next();
-
-		String resultString = rs.getString(2);
-
-		System.out.println("\n" + resultString);
-		System.out.println(java.sql.Date.valueOf(java.time.LocalDate.now()));
-
-		// Assert
-		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString(), resultString);
+		
+		
+		PPayStation payStation = tempPBuy.getAssociatedPaystation();
+		
+		
+		assertEquals(payStation.getTimeBoughtInMinutes(), Integer.parseInt(rs.getString(3)));
+		assertEquals(payStation.getAmount(), Double.parseDouble(rs.getString(4)), 0);
+		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString(), rs.getString(2).substring(0, 10));
+		
+		dbPbuy.deleteParkingBuy(tempPBuy);
 		
 	}	
 	
