@@ -1,11 +1,16 @@
 package controllayer;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import modellayer.*;
 import databaselayer.DatabaseLayerException;
-import databaselayer.IDbPBuy;
 import databaselayer.DatabasePBuy;
+import databaselayer.IDbPBuy;
+import modellayer.Coin;
+import modellayer.Currency;
+import modellayer.PBuy;
+import modellayer.PPayStation;
+import modellayer.PPrice;
+import modellayer.PReceipt;
 
 /**
  * Inspired by the book: Flexible, Reliable Software Henrik Bærbak Christensen:
@@ -45,7 +50,7 @@ public class ControlPayStation {
 
 	// Process the buy
 	public PReceipt buy() throws DatabaseLayerException {
-		LocalDate currentTime = java.time.LocalDate.now();
+		LocalDateTime currentTime = java.time.LocalDateTime.now();
 		
 		// create buy
 		PBuy thisBuy = new PBuy();

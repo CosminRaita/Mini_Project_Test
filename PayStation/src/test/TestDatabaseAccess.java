@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -63,7 +65,9 @@ public class TestDatabaseAccess {
 	public void wasInsertedBuy() throws DatabaseLayerException, SQLException {
 		
 		// Arrange
-		LocalDate timeNow = java.time.LocalDate.now();
+		LocalDateTime timeNow = java.time.LocalDateTime.now();
+		
+		
 		double payedCentAmount = 100;
 		
 		tempPBuy = new PBuy();
@@ -76,7 +80,9 @@ public class TestDatabaseAccess {
 		DatabasePBuy dbPbuy = new DatabasePBuy();
 		
 		// Act
-		dbPbuy.insertParkingBuy(tempPBuy);
+		tempPBuy.setId(dbPbuy.insertParkingBuy(tempPBuy));
+		
+		
 		
 		Connection con = DBConnection.getInstance().getDBcon();
 
@@ -87,10 +93,10 @@ public class TestDatabaseAccess {
 		
 		PPayStation payStation = tempPBuy.getAssociatedPaystation();
 		
-		
 		assertEquals(payStation.getTimeBoughtInMinutes(), Integer.parseInt(rs.getString(3)));
 		assertEquals(payStation.getAmount(), Double.parseDouble(rs.getString(4)), 0);
-		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString(), rs.getString(2).substring(0, 10));
+		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime().toLocalDate()).toString() + " " 
+		+ java.sql.Time.valueOf(tempPBuy.getBuyTime().toLocalTime()).toString() + ".0", rs.getString(2));
 		
 		dbPbuy.deleteParkingBuy(tempPBuy);
 		

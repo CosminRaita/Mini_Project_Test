@@ -1,6 +1,7 @@
 package modellayer;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Inspired by the book: Flexible, Reliable Software Henrik Bærbak Christensen:
@@ -12,7 +13,7 @@ public class PBuy {
 	// Buy ident
 	private long id;
 	// Time of buy
-	private LocalDate buyTime;
+	private LocalDateTime buyTime;
 	// Parkingtime in minutes
 	private int duration;
 	// Payed amount in cents
@@ -27,7 +28,7 @@ public class PBuy {
 	public PBuy(int foundId) {
 		id = foundId;
 	}	
-	public PBuy(LocalDate buyTime, int parkingDuration, double payedCentAmount) {
+	public PBuy(LocalDateTime buyTime, int parkingDuration, double payedCentAmount) {
 		this.buyTime = buyTime;
 		this.duration = parkingDuration;
 		this.payedAmount = payedCentAmount;
@@ -42,11 +43,11 @@ public class PBuy {
 		this.id = id;
 	}
 
-	public LocalDate getBuyTime() {
+	public LocalDateTime getBuyTime() {
 		return buyTime;
 	}
 
-	public void setBuyTime(LocalDate buyTime) {
+	public void setBuyTime(LocalDateTime buyTime) {
 		this.buyTime = buyTime;
 	}
 
