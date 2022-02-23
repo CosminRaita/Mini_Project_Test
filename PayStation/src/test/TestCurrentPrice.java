@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controllayer.ControlPrice;
+import databaselayer.DatabaseLayerException;
 import modellayer.PPrice;
 
 class TestCurrentPrice {
@@ -28,4 +29,16 @@ class TestCurrentPrice {
 		assertEquals(24, pp.getParkingPrice());
 	}
 
+	@Test
+	void testRemotePrice() {
+		try {
+			PPrice pp = controlPrice.getPriceRemote(1);
+			System.out.println(pp.getParkingPrice());
+			assertEquals(35, pp.getParkingPrice());
+		} catch (DatabaseLayerException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
 }

@@ -1,11 +1,13 @@
 package databaselayer;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
-import java.sql.SQLException;
 
-import modellayer.*;
+import modellayer.PPrice;
+import modellayer.PZone;
 
 public class DatabasePPrice implements IDbPPrice {
 	
@@ -25,19 +27,28 @@ public class DatabasePPrice implements IDbPPrice {
 		String baseSelect = "select top 1 price, pZone_id from PPrice ";
 		baseSelect += "where pZone_id = " + zoneId + " and starttime < '" + dateNow + "' ";
 		baseSelect += "order by starttime desc";
-		System.out.println(baseSelect);
-	
-		//ResultSet rs = null; 
-		int price, pZoneId;
+		
+		String selectZone = "select * from PZone where id ="+ zoneId + ";";
+
+		int price;
 		PZone pZone; 
 		try {
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);
 			// Todo: Get PPrice object
-			// ResultSet rs = stmt.executeQuery(baseSelect);
-			/*
-			 * Insert code 
-			 */
+			ResultSet rs = stmt.executeQuery(baseSelect);
+			
+			Statement stmt2 = con.createStatement();
+			ResultSet rs2 = stmt2.executeQuery(selectZone);
+			
+			rs.next();
+			rs2.next();
+			
+			price = rs.getInt(1);
+			pZone = new PZone(rs2.getInt("id"), rs2.getString("name"));
+			
+			foundPrice = new PPrice(price,pZone);
+			
 			stmt.close();
 		} catch (SQLException ex) {
 			foundPrice = null;
