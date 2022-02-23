@@ -1,22 +1,23 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import controllayer.ControlPrice;
 //import controllayer.ControlPayStation;
 //import controllayer.Currency;
 //import controllayer.IPayStation;
@@ -41,24 +42,28 @@ public class TestDatabaseAccess {
 	
 	DBConnection con = null;
 	static PBuy tempPBuy;
+	private ControlPrice controlPrice;
+	private DatabasePPrice databasePPrice;
 
 	/** Fixture for pay station testing. */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		con = DBConnection.getInstance();
+		controlPrice = new ControlPrice();
+		databasePPrice = new DatabasePPrice();
 	}
 	
 	
 	@Test
 	public void wasConnected() {
-		assertNotNull("Connected - connection cannot be null", con);
+		assertNotNull(con, "Connected - connection cannot be null");
 		
 		DBConnection.closeConnection();
 		boolean wasNullified = DBConnection.instanceIsNull();
-		assertTrue("Disconnected - instance set to null", wasNullified);
+		assertTrue(wasNullified, "Disconnected - instance set to null");
 		
 		con = DBConnection.getInstance();
-		assertNotNull("Connected - connection cannot be null", con);		
+		assertNotNull(con, "Connected - connection cannot be null");		
 	}
 	
 	
@@ -104,48 +109,145 @@ public class TestDatabaseAccess {
 
 		con.createStatement().executeUpdate("DBCC CHECKIDENT ('PBuy', RESEED, " + (tempPBuy.getId()-1) + ")");
 		
-		dbPbuy.deleteParkingBuy(tempPBuy);		
 		
 	}	
 	
 	
 	@Test
-	public void wasRetrievedPriceDatabaselayer() {
-		// Arrange
-		PPrice foundPrice = null;
-		int pZoneId = 2;
-		DatabasePPrice dbPrice = new DatabasePPrice();
+	void wasRetrievedPriceControlLayer() {
+		PPrice pp = controlPrice.getCurrentPrice();
+		assertEquals(24, pp.getParkingPrice());
+	}
+	
+	@Test
+	void wasRetrievedPriceControlLayerZoneId0() {
+		Assertions.assertThrows(DatabaseLayerException.class, () ->{
+			@SuppressWarnings("unused")
+			PPrice pp = controlPrice.getPriceRemote(0);
+			});	
+	}
 
+	@Test
+	void wasRetrievedPriceControlLayerZoneId1() {
+		try {
+			PPrice pp = controlPrice.getPriceRemote(1);
+			assertEquals(35, pp.getParkingPrice());
+			assertEquals(7.5, pp.getExchangeEuroDkk());
+			assertEquals(1, pp.getParkingZone().getpZoneId());
+		} catch (DatabaseLayerException e) {
+			e.printStackTrace();
+			fail();
+		}
 		
-		// Act
-
-		// Assert
-		assertEquals("Dummy", 0, 1);
+	}
+	
+	@Test
+	void wasRetrievedPriceControlLayerZoneId2() {
+		try {
+			PPrice pp = controlPrice.getPriceRemote(2);
+			assertEquals(25, pp.getParkingPrice());
+			assertEquals(7.5, pp.getExchangeEuroDkk());
+			assertEquals(2, pp.getParkingZone().getpZoneId());
+		} catch (DatabaseLayerException e) {
+			e.printStackTrace();
+			fail();
+		}
 		
+	}
+	
+	@Test
+	void wasRetrievedPriceControlLayerZoneId3() {
+		try {
+			PPrice pp = controlPrice.getPriceRemote(3);
+			assertEquals(15, pp.getParkingPrice());
+			assertEquals(7.5, pp.getExchangeEuroDkk());
+			assertEquals(3, pp.getParkingZone().getpZoneId());
+		} catch (DatabaseLayerException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
+	
+	@Test
+	void wasRetrievedPriceControlLayerZoneId4() {
+		Assertions.assertThrows(DatabaseLayerException.class, () ->{
+			@SuppressWarnings("unused")
+			PPrice pp = controlPrice.getPriceRemote(4);
+			});	
 	}
 	
 	
 	@Test
-	public void wasRetrievedPriceControllayer() {
-
-		// Arrange
-
-		
-		// Act
-
-		// Assert
-		assertEquals("Dummy", 0, 1);
-		
+	public void wasRetrievedPriceDatabaseLayer() {
+		PPrice pp = databasePPrice.getCurrentPrice();
+		assertEquals(24, pp.getParkingPrice());
 	}	
 	
+	@Test
+	void wasRetrievedPriceDatabaselLayerZoneId0() {
+		Assertions.assertThrows(DatabaseLayerException.class, () ->{
+			@SuppressWarnings("unused")
+			PPrice pp = databasePPrice.getPriceByZoneId(0);
+			});	
+	}
+	
+	@Test
+	public void wasRetrievedPriceDatabaseLayerZoneId1() {
+		try {
+			PPrice pp = databasePPrice.getPriceByZoneId(1);
+			assertEquals(35, pp.getParkingPrice());
+			assertEquals(7.5, pp.getExchangeEuroDkk());
+			assertEquals(1, pp.getParkingZone().getpZoneId());
+		} catch (DatabaseLayerException e) {
+			e.printStackTrace();
+			fail();
+		}	
+	}
+	
+	@Test
+	void wasRetrievedPriceDatabaseLayerZoneId2() {
+		try {
+			PPrice pp = databasePPrice.getPriceByZoneId(2);
+			assertEquals(25, pp.getParkingPrice());
+			assertEquals(7.5, pp.getExchangeEuroDkk());
+			assertEquals(2, pp.getParkingZone().getpZoneId());
+		} catch (DatabaseLayerException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
+	
+	@Test
+	void wasRetrievedPriceDatabaseLayerZoneId3() {
+		try {
+			PPrice pp = databasePPrice.getPriceByZoneId(3);
+			assertEquals(15, pp.getParkingPrice());
+			assertEquals(7.5, pp.getExchangeEuroDkk());
+			assertEquals(3, pp.getParkingZone().getpZoneId());
+		} catch (DatabaseLayerException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
+	
+	@Test
+	void wasRetrievedPriceDatabaselLayerZoneId4() {
+		Assertions.assertThrows(DatabaseLayerException.class, () ->{
+			@SuppressWarnings("unused")
+			PPrice pp = databasePPrice.getPriceByZoneId(4);
+			});	
+	}
 	
 	/** Fixture for pay station testing. */
-	@After
+	@AfterEach
 	public void cleanUp() {
 		DBConnection.closeConnection();
 	}	
 	
-	@AfterClass
+	@AfterAll
 	public static void cleanUpWhenFinish() {
 		// 		
 		// Arrange
@@ -162,7 +264,7 @@ public class TestDatabaseAccess {
 		}
 	
 		// Assert
-		assertEquals("One row deleted", 1, numDeleted );
+		assertEquals(1, numDeleted, "One row deleted");
 	}	
 
 }

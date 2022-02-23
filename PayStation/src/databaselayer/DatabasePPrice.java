@@ -28,7 +28,7 @@ public class DatabasePPrice implements IDbPPrice {
 		baseSelect += "where pZone_id = " + zoneId + " and starttime < '" + dateNow + "' ";
 		baseSelect += "order by starttime desc";
 		
-		String selectZone = "select * from PZone where id ="+ zoneId + ";";
+		String selectZone = "select * from PZone where id =" + zoneId + ";";
 
 		int price;
 		PZone pZone; 
@@ -47,7 +47,7 @@ public class DatabasePPrice implements IDbPPrice {
 			price = rs.getInt(1);
 			pZone = new PZone(rs2.getInt("id"), rs2.getString("name"));
 			
-			foundPrice = new PPrice(price,pZone);
+			foundPrice = new PPrice(price,pZone,7.5);
 			
 			stmt.close();
 		} catch (SQLException ex) {
