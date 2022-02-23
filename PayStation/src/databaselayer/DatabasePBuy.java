@@ -12,7 +12,8 @@ public class DatabasePBuy implements IDbPBuy {
 	public int insertParkingBuy(PBuy parkingBuy) throws DatabaseLayerException {
 		int insertedKey = 1;
 		
-		java.sql.Date sqldate = java.sql.Date.valueOf(parkingBuy.getBuyTime());
+		java.sql.Date sqldate = java.sql.Date.valueOf(parkingBuy.getBuyTime().toLocalDate());
+		java.sql.Time sqltime = java.sql.Time.valueOf(parkingBuy.getBuyTime().toLocalTime());
 		PPayStation payStation = parkingBuy.getAssociatedPaystation();
 		
 		int parkingDuration = payStation.getTimeBoughtInMinutes();
@@ -21,8 +22,7 @@ public class DatabasePBuy implements IDbPBuy {
 		Connection con = DBConnection.getInstance().getDBcon();
 
 		String baseInsert = "insert into PBuy (buyTime, duration, payedAmount, pPaystation_id) values ";
-		baseInsert += "(" + sqldate + ", " + parkingDuration + ", " + payedCentAmount + ", " + payStation.getId() + ")";
-		System.out.println(baseInsert);
+		baseInsert += "(" + "CAST(N'" + sqldate + " " + sqltime + "' AS DateTime), " + parkingDuration + ", " + payedCentAmount + ", " + payStation.getId() + ")";
 
 		try {
 			Statement stmt = con.createStatement();
@@ -67,7 +67,6 @@ public class DatabasePBuy implements IDbPBuy {
 		PreparedStatement pstmt = null;
 
 		String baseDelete = "delete from PBuy where id = ?";
-		System.out.println(baseDelete);
 
 		try {
 			con = DBConnection.getInstance().getDBcon();
