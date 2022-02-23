@@ -1,19 +1,31 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.Test;
 
 //import controllayer.ControlPayStation;
 //import controllayer.Currency;
 //import controllayer.IPayStation;
 //import controllayer.IReceipt;
 //import controllayer.IllegalCoinException;
-
-import databaselayer.*;
-import modellayer.*;
-import controllayer.*;
+import databaselayer.DBConnection;
+import databaselayer.DatabaseLayerException;
+import databaselayer.DatabasePBuy;
+import databaselayer.DatabasePPrice;
+import modellayer.PBuy;
+import modellayer.PPayStation;
+import modellayer.PPrice;
 
 //import static org.junit.Assert.*;
 
@@ -48,7 +60,7 @@ public class TestDatabaseAccess {
 	
 	
 	@Test
-	public void wasInsertedBuy() {
+	public void wasInsertedBuy() throws DatabaseLayerException, SQLException {
 		
 		// Arrange
 		LocalDate timeNow = java.time.LocalDate.now();
@@ -64,10 +76,23 @@ public class TestDatabaseAccess {
 		DatabasePBuy dbPbuy = new DatabasePBuy();
 		
 		// Act
-		int key = 0; //TODO: Call dbPbuy
+		dbPbuy.insertParkingBuy(tempPBuy);
+
+		System.out.println("\n" + java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString());
 		
+		Connection con = DBConnection.getInstance().getDBcon();
+
+		ResultSet rs = con.createStatement().executeQuery("SELECT * FROM PBuy WHERE id=(SELECT max(id) FROM PBuy);");
+
+		rs.next();
+
+		String resultString = rs.getString(2);
+
+		System.out.println("\n" + resultString);
+		System.out.println(java.sql.Date.valueOf(java.time.LocalDate.now()));
+
 		// Assert
-		assertEquals("Dummy", key > 0);
+		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString(), resultString);
 		
 	}	
 	
