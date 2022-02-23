@@ -31,7 +31,7 @@ public class TestCalculationCurrencyMixed {
 		// Act
 
 		// Assert
-		assertEquals("Dummy", 0, 1);		
+		//assertEquals("Dummy", 0, 1);		
 	}
 
 	
