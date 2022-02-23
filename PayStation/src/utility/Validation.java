@@ -6,7 +6,7 @@ import modellayer.Currency;
 
 public class Validation {
 	
-	public static void 	(Coin coin) throws IllegalCoinException {
+	public static void validateCoin(Coin coin) throws IllegalCoinException {
 		
 		int coinValue = coin.getAmount();
 		Currency.ValidCurrency currency = coin.getCurrency();
