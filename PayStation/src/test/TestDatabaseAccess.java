@@ -1,32 +1,19 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.junit.*;
 import java.time.LocalDate;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
 
 //import controllayer.ControlPayStation;
 //import controllayer.Currency;
 //import controllayer.IPayStation;
 //import controllayer.IReceipt;
 //import controllayer.IllegalCoinException;
-import databaselayer.DBConnection;
-import databaselayer.DatabaseLayerException;
-import databaselayer.DatabasePBuy;
-import databaselayer.DatabasePPrice;
-import modellayer.PBuy;
-import modellayer.PPayStation;
-import modellayer.PPrice;
+
+import databaselayer.*;
+import modellayer.*;
+import controllayer.*;
 
 //import static org.junit.Assert.*;
 
@@ -61,11 +48,9 @@ public class TestDatabaseAccess {
 	
 	
 	@Test
-	public void wasInsertedBuy() throws DatabaseLayerException, SQLException {
+	public void wasInsertedBuy() {
 		
 		// Arrange
-		
-		
 		LocalDate timeNow = java.time.LocalDate.now();
 		double payedCentAmount = 100;
 		
@@ -79,24 +64,10 @@ public class TestDatabaseAccess {
 		DatabasePBuy dbPbuy = new DatabasePBuy();
 		
 		// Act
-		dbPbuy.insertParkingBuy(tempPBuy);
+		int key = 0; //TODO: Call dbPbuy
 		
-		System.out.println("\n" + java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString());
-		
-		
-		Connection con = DBConnection.getInstance().getDBcon();
-		
-		ResultSet rs = con.createStatement().executeQuery("SELECT * FROM PBuy WHERE id=(SELECT max(id) FROM PBuy);");
-		
-		rs.next();
-		
-		String resultString = rs.getString(2);
-		
-		System.out.println("\n" + resultString);
-		System.out.println(java.sql.Date.valueOf(java.time.LocalDate.now()));
-	
 		// Assert
-		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime()).toString(), resultString);
+		assertEquals("Dummy", key > 0);
 		
 	}	
 	
