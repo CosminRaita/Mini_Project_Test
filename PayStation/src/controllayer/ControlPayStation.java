@@ -21,6 +21,8 @@ public class ControlPayStation {
 		this.payStation = new PPayStation(1, "P-423E");
 		this.controlPrice = new ControlPrice();
 	}
+	
+	
 
 	// Receive one coin as input
 	public void addPayment(int amount, Currency.ValidCurrency currency, Currency.ValidCoinType coinType) throws IllegalCoinException {
