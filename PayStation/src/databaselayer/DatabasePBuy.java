@@ -26,7 +26,7 @@ public class DatabasePBuy implements IDbPBuy {
 
 		String baseInsert = "insert into PBuy (buyTime, duration, payedAmount, pPaystation_id) values ";
 		baseInsert += "(" + "CAST(N'" + sqldate + " " + sqltime + "' AS DateTime), " + parkingDuration + ", " + payedCentAmount + ", " + payStation.getId() + ")";
-
+		System.out.println(baseInsert);
 		try {
 			Statement stmt = con.createStatement();
 			stmt.setQueryTimeout(5);

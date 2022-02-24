@@ -2,12 +2,16 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controllayer.ControlPayStation;
 import controllayer.IllegalCoinException;
+import databaselayer.DBConnection;
 import databaselayer.DatabaseLayerException;
 import modellayer.Currency;
 
@@ -47,6 +51,15 @@ public class TestReset {
 		// Assert
 		assertEquals(expectedValue, ps.readDisplay());
 		
+		Connection con = DBConnection.getInstance().getDBcon();
+		
+		con.createStatement().executeUpdate("DELETE PBuy WHERE id=(SELECT max(id) FROM PBuy);");
+		ResultSet rs = con.createStatement().executeQuery("SELECT max(id) FROM PBuy");
+		rs.next();
+		
+		String id = rs.getString(1);
+		
+		con.createStatement().executeUpdate("DBCC CHECKIDENT ('PBuy', RESEED, " + id + ")");
 	}
 
 	/**

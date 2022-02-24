@@ -61,7 +61,7 @@ public class ControlPayStation {
 		
 		// Save in Parkingsystem db
 		IDbPBuy dbBuy = new DatabasePBuy();
-		dbBuy.insertParkingBuy(thisBuy);
+		thisBuy.setId(dbBuy.insertParkingBuy(thisBuy));
 		//
 		ControlReceipt ctrlReceipt = new ControlReceipt(payStation.getTimeBoughtInMinutes());
 		
