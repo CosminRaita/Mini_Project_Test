@@ -1,6 +1,7 @@
 package modellayer;
 
 import controllayer.IllegalCoinException;
+import utility.Validation;
 
 public class PPayment {
 
@@ -47,21 +48,9 @@ public class PPayment {
 		return timeBoughtInMinutes;
 	}
 	
-	public void validateCoin(int coinValue, Currency.ValidCurrency currency, Currency.ValidCoinType coinType) throws IllegalCoinException {
-
-		if (currency == Currency.ValidCurrency.EURO) {
-			boolean euroCoinOk = validateEuro(coinValue, coinType);
-			if (!euroCoinOk) {
-				throw new IllegalCoinException("Invalid Euro coin: " + coinValue);
-			}
-		} else if (currency == Currency.ValidCurrency.DKK) {
-			boolean dkkCoinOk = validateDkk(coinValue, coinType);
-			if (!dkkCoinOk) {
-				throw new IllegalCoinException("Invalid Dkk coin: " + coinValue);
-			}
-		} else {
-			throw new IllegalCoinException("Invalid coin: " + coinValue);
-		}
+	public void validateCoin(Coin coin) throws IllegalCoinException {
+		
+		Validation.validateCoin(coin);	
 	}
 
 	private boolean validateEuro(int coinValue, Currency.ValidCoinType coinType) {
