@@ -29,19 +29,5 @@ public class PPayment {
 		this.amount += Calculation.getCoinValueInCent(coin, currentPrice);
 		
 	}
-	
-	public int getTimeBoughtInMinutes() {
-		PPrice aPrice = new PPrice();
-		int timeBoughtInMinutes = 0;
 
-		double timeBoughtInSeconds = this.amount * aPrice.getParkingPrice();
-		timeBoughtInMinutes = (int) ((timeBoughtInSeconds + 59) / 60);
-
-		return timeBoughtInMinutes;
-	}
-	
-	public void validateCoin(Coin coin) throws IllegalCoinException {
-		
-		Validation.validateCoin(coin);	
-	}	
 }

@@ -16,15 +16,14 @@ public class PPayStation {
 	private int id;	
 	// PayStaion model
 	private String payStationModel;
-	// Amount inserted in pay station
-	private double amount = 0;
+	private PPayment currentPayment;
 	private ControlPrice controlPrice;
 	
 	
 	public PPayStation(int id, String payStationModel) {
 		this.id = id;
 		this.payStationModel = payStationModel;
-		
+		this.currentPayment = new PPayment();
 		this.controlPrice = new ControlPrice();
 	}
 
@@ -35,6 +34,14 @@ public class PPayStation {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	public void setAmount(double amount) {
+		currentPayment.setAmount(amount);
+	}
+	
+	public double getAmount() {
+		return currentPayment.getAmount();
+	}
 
 	public String getPayStationModel() {
 		return payStationModel;
@@ -44,29 +51,13 @@ public class PPayStation {
 		this.payStationModel = payStationModel;
 	}	
 	
-	public double getAmount() {
-		return amount;
-	}
-	
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
-	
-	public void addAmount(Coin coin, PPrice currentPrice) {
-		
-		double valueInCent = 0;
-
-		valueInCent = Calculation.getCoinValueInCent(coin, currentPrice);
-		
-		this.amount += valueInCent;
-	}
-	
 	public int getTimeBoughtInMinutes() {
 		
 		PPrice aPrice = controlPrice.getCurrentPrice();
 		int timeBoughtInMinutes = 0;
-
-		double timeBoughtInSeconds = this.amount * aPrice.getParkingPrice();
+		double amount = currentPayment.getAmount();
+		
+		double timeBoughtInSeconds = amount * aPrice.getParkingPrice();
 		timeBoughtInMinutes = (int) ((timeBoughtInSeconds + 59) / 60);
 
 		return timeBoughtInMinutes;
@@ -77,4 +68,7 @@ public class PPayStation {
 		Validation.validateCoin(coin);	
 	}
 	
+	public void addAmount(Coin coin, PPrice currentPrice) {
+		currentPayment.addAmount(coin, currentPrice);
+	}
 }
