@@ -9,7 +9,6 @@ import modellayer.Coin;
 import modellayer.Currency;
 import modellayer.PBuy;
 import modellayer.PPayStation;
-import modellayer.PPayment;
 import modellayer.PPrice;
 import modellayer.PReceipt;
 

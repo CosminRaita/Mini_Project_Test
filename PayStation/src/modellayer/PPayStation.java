@@ -2,7 +2,6 @@ package modellayer;
 
 import controllayer.ControlPrice;
 import controllayer.IllegalCoinException;
-import utility.Calculation;
 import utility.Validation;
 
 /**

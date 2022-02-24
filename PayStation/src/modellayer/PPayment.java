@@ -1,8 +1,6 @@
 package modellayer;
 
-import controllayer.IllegalCoinException;
 import utility.Calculation;
-import utility.Validation;
 
 public class PPayment {
 

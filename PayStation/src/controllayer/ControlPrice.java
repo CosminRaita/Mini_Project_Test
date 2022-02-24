@@ -1,8 +1,8 @@
 package controllayer;
 
 import databaselayer.DatabaseLayerException;
-import databaselayer.IDbPPrice;
 import databaselayer.DatabasePPrice;
+import databaselayer.IDbPPrice;
 import modellayer.PPrice;
 
 public class ControlPrice {
