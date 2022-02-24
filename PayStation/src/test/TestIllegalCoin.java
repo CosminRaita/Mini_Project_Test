@@ -1,8 +1,9 @@
 package test;
 
-import org.junit.Before;
-import org.junit.Test;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import controllayer.IllegalCoinException;
 import modellayer.Coin;
@@ -19,7 +20,7 @@ public class TestIllegalCoin {
 	PPayStation ps;
 	
 	/** Fixture for pay station testing. */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ps = new PPayStation(1, "P-423E");
 	}
