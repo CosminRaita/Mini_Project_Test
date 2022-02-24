@@ -18,6 +18,7 @@ public class PPayStation {
 	private String payStationModel;
 	private PPayment currentPayment;
 	private ControlPrice controlPrice;
+	private PLot plot;
 	
 	
 	public PPayStation(int id, String payStationModel) {
@@ -25,6 +26,7 @@ public class PPayStation {
 		this.payStationModel = payStationModel;
 		this.currentPayment = new PPayment();
 		this.controlPrice = new ControlPrice();
+		this.plot = plot;
 	}
 
 	public int getId() {
