@@ -4,11 +4,21 @@ public class PLot {
 
 	private int id;
 	private String name;
-	private String zipCode;
+	private int zipCode;
 	private PZone zone;
 	
-	public PLot() {
-		
+	/**
+	 * @param id
+	 * @param name
+	 * @param zipCode
+	 * @param zone
+	 */
+	public PLot(int id, String name, int zipCode, PZone zone) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.zipCode = zipCode;
+		this.zone = zone;
 	}
 	
 	/**
@@ -38,13 +48,13 @@ public class PLot {
 	/**
 	 * @return the zipCode
 	 */
-	public String getZipCode() {
+	public int getZipCode() {
 		return zipCode;
 	}
 	/**
 	 * @param zipCode the zipCode to set
 	 */
-	public void setZipCode(String zipCode) {
+	public void setZipCode(int zipCode) {
 		this.zipCode = zipCode;
 	}
 	/**
@@ -58,6 +68,10 @@ public class PLot {
 	 */
 	public void setZone(PZone zone) {
 		this.zone = zone;
+	}
+	
+	public int getZoneId() {
+		return zone.getpZoneId();
 	}
 	
 }

@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 import controllayer.IllegalCoinException;
 import modellayer.Coin;
 import modellayer.Currency;
+import modellayer.PLot;
 import modellayer.PPayStation;
+import modellayer.PZone;
 
 /**
  * Inspired by the book: Flexible, Reliable Software Henrik Bærbak Christensen:
@@ -22,7 +24,7 @@ public class TestIllegalCoin {
 	/** Fixture for pay station testing. */
 	@BeforeEach
 	public void setUp() {
-		ps = new PPayStation(1, "P-423E");
+		ps = new PPayStation(1, "P-423E", new PLot(2, "Ved vandmaden", 9200, new PZone(2, "B Zone")));
 	}
 
 	/**

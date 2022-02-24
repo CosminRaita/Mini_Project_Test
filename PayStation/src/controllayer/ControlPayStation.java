@@ -8,9 +8,11 @@ import databaselayer.IDbPBuy;
 import modellayer.Coin;
 import modellayer.Currency;
 import modellayer.PBuy;
+import modellayer.PLot;
 import modellayer.PPayStation;
 import modellayer.PPrice;
 import modellayer.PReceipt;
+import modellayer.PZone;
 
 /**
  * Inspired by the book: Flexible, Reliable Software Henrik Bærbak Christensen:
@@ -23,14 +25,14 @@ public class ControlPayStation {
 	private ControlPrice controlPrice;
 	
 	public ControlPayStation() {
-		this.payStation = new PPayStation(1, "P-423E");
+		this.payStation = new PPayStation(1, "P-423E", new PLot(2, "Ved vandmaden", 9200, new PZone(2, "B Zone")));
 		this.controlPrice = new ControlPrice();
 	}
 	
 	
 
 	// Receive one coin as input
-	public void addPayment(int amount, Currency.ValidCurrency currency, Currency.ValidCoinType coinType) throws IllegalCoinException {
+	public void addPayment(int amount, Currency.ValidCurrency currency, Currency.ValidCoinType coinType) throws IllegalCoinException, DatabaseLayerException {
 	
 		Coin coin = new Coin(amount, currency, coinType);
 		
@@ -43,7 +45,7 @@ public class ControlPayStation {
 					"Invalid coin: " + currency.toString() + ", " + coinType.toString() + ", " + amount);
 		}
 		
-		PPrice currentPrice = controlPrice.getCurrentPrice();
+		PPrice currentPrice = controlPrice.getCurrentPrice(payStation.getZoneId());
 		// Add amount
 		payStation.addAmount(coin, currentPrice);	
 	}
@@ -71,8 +73,9 @@ public class ControlPayStation {
 	/**
 	 * Calculate the corresponding parking time in minutes
 	 * (calculated seconds and convert to minutes - rounded up)
+	 * @throws DatabaseLayerException 
 	*/
-	public int readDisplay() {
+	public int readDisplay() throws DatabaseLayerException {
 		return payStation.getTimeBoughtInMinutes();
 	}	
 	

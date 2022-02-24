@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import controllayer.ControlPayStation;
 import controllayer.IllegalCoinException;
+import databaselayer.DatabaseLayerException;
 import modellayer.Currency;
 
 /**
@@ -50,9 +51,10 @@ public class TestReset {
 
 	/**
 	 * Verify that cancel() clears the pay station
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldClearAfterCancel() throws IllegalCoinException {
+	public void shouldClearAfterCancel() throws IllegalCoinException, DatabaseLayerException {
 		// Arrange
 		int expectedValue = 0;
 		int paying = 1;

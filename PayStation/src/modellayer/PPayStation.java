@@ -2,6 +2,7 @@ package modellayer;
 
 import controllayer.ControlPrice;
 import controllayer.IllegalCoinException;
+import databaselayer.DatabaseLayerException;
 import utility.Validation;
 
 /**
@@ -20,7 +21,7 @@ public class PPayStation {
 	private PLot plot;
 	
 	
-	public PPayStation(int id, String payStationModel) {
+	public PPayStation(int id, String payStationModel, PLot plot) {
 		this.id = id;
 		this.payStationModel = payStationModel;
 		this.currentPayment = new PPayment();
@@ -52,9 +53,9 @@ public class PPayStation {
 		this.payStationModel = payStationModel;
 	}	
 	
-	public int getTimeBoughtInMinutes() {
+	public int getTimeBoughtInMinutes() throws DatabaseLayerException {
 		
-		PPrice aPrice = controlPrice.getCurrentPrice();
+		PPrice aPrice = controlPrice.getCurrentPrice(getZoneId());
 		int timeBoughtInMinutes = 0;
 		double amount = currentPayment.getAmount();
 		
@@ -71,5 +72,9 @@ public class PPayStation {
 	
 	public void addAmount(Coin coin, PPrice currentPrice) {
 		currentPayment.addAmount(coin, currentPrice);
+	}
+	
+	public int getZoneId() {
+		return plot.getZoneId();
 	}
 }

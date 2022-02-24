@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import controllayer.ControlPayStation;
 import controllayer.IllegalCoinException;
+import databaselayer.DatabaseLayerException;
 import modellayer.Currency;
 
 /**
@@ -28,9 +29,10 @@ public class TestCalculationCurrencyDkk {
 
 	/**
 	 * Entering 50 øre should make the display report 3 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay3MinFor50Ore() throws IllegalCoinException {
+	public void shouldDisplay3MinFor50Ore() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
 		int expectedParkingTime = 3;	// In minutes
@@ -47,9 +49,10 @@ public class TestCalculationCurrencyDkk {
 	
 	/**
 	 * Entering 1 dkk should make the display report 6 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay6MinFor1dkk() throws IllegalCoinException {
+	public void shouldDisplay6MinFor1dkk() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
 		int expectedParkingTime = 6;	// In minutes
@@ -66,12 +69,13 @@ public class TestCalculationCurrencyDkk {
 	
 	/**
 	 * Entering 1 dkk and 2 dkk should make the display report 16 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay16MinFor1dkkAnd2dkk() throws IllegalCoinException {
+	public void shouldDisplay17MinFor1dkkAnd2dkk() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
-		int expectedParkingTime = 16;	// In minutes
+		int expectedParkingTime = 17;	// In minutes
 		int coinValue = 1;
 		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.DKK;
 		Currency.ValidCoinType coinType = Currency.ValidCoinType.INTEGER;

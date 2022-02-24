@@ -28,8 +28,10 @@ import databaselayer.DatabaseLayerException;
 import databaselayer.DatabasePBuy;
 import databaselayer.DatabasePPrice;
 import modellayer.PBuy;
+import modellayer.PLot;
 import modellayer.PPayStation;
 import modellayer.PPrice;
+import modellayer.PZone;
 
 //import static org.junit.Assert.*;
 
@@ -75,7 +77,7 @@ public class TestDatabaseAccess {
 		
 		double payedCentAmount = 100;
 		
-		PPayStation pStat = new PPayStation(1, "P-423E");
+		PPayStation pStat = new PPayStation(1, "P-423E", new PLot(2, "Ved vandmaden", 9200, new PZone(2, "B Zone")));
 		pStat.setAmount(payedCentAmount);
 		
 		tempPBuy = new PBuy();
@@ -97,36 +99,31 @@ public class TestDatabaseAccess {
 		
 		PPayStation payStation = tempPBuy.getAssociatedPaystation();
 		
-		
+		int number = Integer.parseInt(rs.getString(3));
+		double amount = Double.parseDouble(rs.getString(4));
+		String date =  rs.getString(2);
 		// Assert
-		assertEquals(payStation.getTimeBoughtInMinutes(), Integer.parseInt(rs.getString(3)));
-		assertEquals(payStation.getAmount(), Double.parseDouble(rs.getString(4)), 0);
+		assertEquals(payStation.getTimeBoughtInMinutes(), number);
+		assertEquals(payStation.getAmount(), amount, 0);
 		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime().toLocalDate()).toString() + " " 
-		+ java.sql.Time.valueOf(tempPBuy.getBuyTime().toLocalTime()).toString() + ".0", rs.getString(2));
+		+ java.sql.Time.valueOf(tempPBuy.getBuyTime().toLocalTime()).toString() + ".0", date);
 
 		// Cleanup
-		con.createStatement().executeUpdate("DBCC CHECKIDENT ('PBuy', RESEED, " + (tempPBuy.getId()-1) + ")");
+		DBConnection.getInstance().getDBcon().createStatement().executeUpdate("DBCC CHECKIDENT ('PBuy', RESEED, " + (tempPBuy.getId()-1) + ")");
 	}	
-	
-	
-	@Test
-	public void wasRetrievedPriceControlLayer() {
-		PPrice pp = controlPrice.getCurrentPrice();
-		assertEquals(24, pp.getParkingPrice());
-	}
 	
 	@Test
 	public void wasRetrievedPriceControlLayerZoneId0() {
 		Assertions.assertThrows(DatabaseLayerException.class, () ->{
 			@SuppressWarnings("unused")
-			PPrice pp = controlPrice.getPriceRemote(0);
+			PPrice pp = controlPrice.getCurrentPrice(0);
 		});	
 	}
 
 	@Test
 	public void wasRetrievedPriceControlLayerZoneId1() {
 		try {
-			PPrice pp = controlPrice.getPriceRemote(1);
+			PPrice pp = controlPrice.getCurrentPrice(1);
 			assertEquals(35, pp.getParkingPrice());
 			assertEquals(7.5, pp.getExchangeEuroDkk());
 			assertEquals(1, pp.getParkingZone().getpZoneId());
@@ -140,7 +137,7 @@ public class TestDatabaseAccess {
 	@Test
 	public void wasRetrievedPriceControlLayerZoneId2() {
 		try {
-			PPrice pp = controlPrice.getPriceRemote(2);
+			PPrice pp = controlPrice.getCurrentPrice(2);
 			assertEquals(25, pp.getParkingPrice());
 			assertEquals(7.5, pp.getExchangeEuroDkk());
 			assertEquals(2, pp.getParkingZone().getpZoneId());
@@ -154,7 +151,7 @@ public class TestDatabaseAccess {
 	@Test
 	public void wasRetrievedPriceControlLayerZoneId3() {
 		try {
-			PPrice pp = controlPrice.getPriceRemote(3);
+			PPrice pp = controlPrice.getCurrentPrice(3);
 			assertEquals(15, pp.getParkingPrice());
 			assertEquals(7.5, pp.getExchangeEuroDkk());
 			assertEquals(3, pp.getParkingZone().getpZoneId());
@@ -169,7 +166,7 @@ public class TestDatabaseAccess {
 	public void wasRetrievedPriceControlLayerZoneId4() {
 		Assertions.assertThrows(DatabaseLayerException.class, () ->{
 			@SuppressWarnings("unused")
-			PPrice pp = controlPrice.getPriceRemote(4);
+			PPrice pp = controlPrice.getCurrentPrice(4);
 		});	
 	}
 	
@@ -252,6 +249,7 @@ public class TestDatabaseAccess {
 		
 		// Act
 		try {
+			
 			numDeleted = dbPbuy.deleteParkingBuy(tempPBuy);
 		} catch(Exception ex) { 
 			System.out.println("Error: " + ex.getMessage());

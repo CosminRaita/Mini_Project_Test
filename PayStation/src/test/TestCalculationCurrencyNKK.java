@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import controllayer.ControlPayStation;
 import controllayer.IllegalCoinException;
+import databaselayer.DatabaseLayerException;
 import modellayer.Currency;
 
 class TestCalculationCurrencyNKK {
@@ -23,9 +24,10 @@ class TestCalculationCurrencyNKK {
 
 	/**
 	 * Entering 10 nok should make raise an exception.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplayExceptionAnd0MinFor10Nok() {
+	public void shouldDisplayExceptionAnd0MinFor10Nok() throws DatabaseLayerException {
 		
 		// Arrange
 		int expectedParkingTime = 0;	// In minutes

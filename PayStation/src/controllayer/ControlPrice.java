@@ -13,14 +13,7 @@ public class ControlPrice {
 		this.dbPrice = new DatabasePPrice();
 	}
 	
-	public PPrice getCurrentPrice() {
-		
-		PPrice currentPrice = new PPrice(); //hardcoded
-		
-		return currentPrice;
-	}
-	
-	public PPrice getPriceRemote(int zoneId) throws DatabaseLayerException {
+	public PPrice getCurrentPrice(int zoneId) throws DatabaseLayerException {
 		
 		// Get price from Parkingsystem DB
 		PPrice readPrice = dbPrice.getPriceByZoneId(zoneId);

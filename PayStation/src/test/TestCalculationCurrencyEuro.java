@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import controllayer.ControlPayStation;
 import controllayer.IllegalCoinException;
+import databaselayer.DatabaseLayerException;
 import modellayer.Currency;
 
 /**
@@ -27,12 +28,13 @@ public class TestCalculationCurrencyEuro {
 	
 	/**
 	 * Entering 1 euro should make the display report 40 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay40MinFor1Euro() throws IllegalCoinException {
+	public void shouldDisplay42MinFor1Euro() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
-		int expectedParkingTime = 40;	// In minutes
+		int expectedParkingTime = 42;	// In minutes
 		int coinValue = 1;
 		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.EURO;
 		Currency.ValidCoinType coinType = Currency.ValidCoinType.INTEGER;
@@ -41,17 +43,20 @@ public class TestCalculationCurrencyEuro {
 		ps.addPayment(coinValue, coinCurrency, coinType);
 			
 		// Assert
+		System.out.println(expectedParkingTime);
+		System.out.println(ps.readDisplay());
 		assertEquals(expectedParkingTime, ps.readDisplay());
 	}
 	
 	/**
 	 * Entering 1 euro and 2 euro should make the display report 120 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay120MinFor1EuroAnd2Euro() throws IllegalCoinException {
+	public void shouldDisplay125MinFor1EuroAnd2Euro() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
-		int expectedParkingTime = 120;	// In minutes
+		int expectedParkingTime = 125;	// In minutes
 		int coinValue = 1;
 		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.EURO;
 		Currency.ValidCoinType coinType = Currency.ValidCoinType.INTEGER;
@@ -69,12 +74,13 @@ public class TestCalculationCurrencyEuro {
 	
 	/**
 	 * Entering 50 cents should make the display report 20 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay20MinFor50cents() throws IllegalCoinException {
+	public void shouldDisplay21MinFor50cents() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
-		int expectedParkingTime = 20;	// In minutes
+		int expectedParkingTime = 21;	// In minutes
 		int coinValue = 50;
 		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.EURO;
 		Currency.ValidCoinType coinType = Currency.ValidCoinType.FRACTION;

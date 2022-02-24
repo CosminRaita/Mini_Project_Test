@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import controllayer.ControlPayStation;
 import controllayer.IllegalCoinException;
+import databaselayer.DatabaseLayerException;
 import modellayer.Currency;
 
 /**
@@ -28,12 +29,13 @@ public class TestCalculationCurrencyMixed {
 
 	/**
 	 * Entering 1 euro and 1 dkk should make the display report 46 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay46MinFor1DkkAnd1Euro() throws IllegalCoinException {
+	public void shouldDisplay48MinFor1DkkAnd1Euro() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
-		int expectedParkingTime = 46;	// In minutes
+		int expectedParkingTime = 48;	// In minutes
 		
 		int coinValue = 1;
 		Currency.ValidCurrency coinCurrencyEuro = Currency.ValidCurrency.EURO;
@@ -51,12 +53,13 @@ public class TestCalculationCurrencyMixed {
 	
 	/**
 	 * Entering 1 euro, 1 dkk, 50 cents and 50 ore should make the display report 68 minutes parking time.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplay68MinFor1DkkAnd1EuroAnd50centsAnd50ore() throws IllegalCoinException {
+	public void shouldDisplay71MinFor1DkkAnd1EuroAnd50centsAnd50ore() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
-		int expectedParkingTime = 68;	// In minutes
+		int expectedParkingTime = 71;	// In minutes
 		
 		int coinValue = 1;
 		Currency.ValidCurrency coinCurrencyEuro = Currency.ValidCurrency.EURO;
@@ -82,12 +85,13 @@ public class TestCalculationCurrencyMixed {
 	
 	/**
 	 * Entering 10 nok and 1 euro should make raise an exception and 40 min.
+	 * @throws DatabaseLayerException 
 	 */
 	@Test
-	public void shouldDisplayExceptionAnd40MinFor10NokAnd1Euro() throws IllegalCoinException {
+	public void shouldDisplayExceptionAnd42MinFor10NokAnd1Euro() throws IllegalCoinException, DatabaseLayerException {
 		
 		// Arrange
-		int expectedParkingTime = 40;	// In minutes
+		int expectedParkingTime = 42;	// In minutes
 		
 		int coinValue = 1;
 		Currency.ValidCurrency coinCurrencyNok = Currency.ValidCurrency.NOK;
