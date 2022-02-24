@@ -64,9 +64,28 @@ public class TestCalculationCurrencyDkk {
 		assertEquals(expectedParkingTime, ps.readDisplay());
 	}
 	
-	
-
-
+	/**
+	 * Entering 1 dkk and 2 dkk should make the display report 16 minutes parking time.
+	 */
+	@Test
+	public void shouldDisplay16MinFor1dkkAnd2dkk() throws IllegalCoinException {
+		
+		// Arrange
+		int expectedParkingTime = 16;	// In minutes
+		int coinValue = 1;
+		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.DKK;
+		Currency.ValidCoinType coinType = Currency.ValidCoinType.INTEGER;
+		
+		// Act
+		ps.addPayment(coinValue, coinCurrency, coinType);
+		
+		coinValue = 2;
+		
+		ps.addPayment(coinValue, coinCurrency, coinType);
+			
+		// Assert
+		assertEquals(expectedParkingTime, ps.readDisplay());
+	}
 
 
 	/** Fixture for pay station testing. */

@@ -3,6 +3,7 @@ package test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,8 +74,35 @@ public class TestCalculationCurrencyMixed {
 		
 		ps.addPayment(coinValue, coinCurrencyEuro, coinType);
 		ps.addPayment(coinValue, coinCurrencyDkk, coinType);
+		
 			
 		// Assert
+		assertEquals(expectedParkingTime, ps.readDisplay());
+	}
+	
+	/**
+	 * Entering 10 nok and 1 euro should make raise an exception and 40 min.
+	 */
+	@Test
+	public void shouldDisplayExceptionAnd40MinFor10NokAnd1Euro() throws IllegalCoinException {
+		
+		// Arrange
+		int expectedParkingTime = 40;	// In minutes
+		
+		int coinValue = 1;
+		Currency.ValidCurrency coinCurrencyNok = Currency.ValidCurrency.NOK;
+		Currency.ValidCurrency coinCurrencyEuro = Currency.ValidCurrency.EURO;
+		
+		Currency.ValidCoinType coinType = Currency.ValidCoinType.INTEGER;
+		
+		ps.addPayment(coinValue, coinCurrencyEuro, coinType);
+		
+		// Assert
+		Assertions.assertThrows(IllegalCoinException.class, () -> {
+			// Act
+			ps.addPayment(coinValue, coinCurrencyNok, coinType);
+		});
+			
 		assertEquals(expectedParkingTime, ps.readDisplay());
 	}
 

@@ -45,6 +45,29 @@ public class TestCalculationCurrencyEuro {
 	}
 	
 	/**
+	 * Entering 1 euro and 2 euro should make the display report 120 minutes parking time.
+	 */
+	@Test
+	public void shouldDisplay120MinFor1EuroAnd2Euro() throws IllegalCoinException {
+		
+		// Arrange
+		int expectedParkingTime = 120;	// In minutes
+		int coinValue = 1;
+		Currency.ValidCurrency coinCurrency = Currency.ValidCurrency.EURO;
+		Currency.ValidCoinType coinType = Currency.ValidCoinType.INTEGER;
+		
+		// Act
+		ps.addPayment(coinValue, coinCurrency, coinType);
+		
+		coinValue = 2;
+		
+		ps.addPayment(coinValue, coinCurrency, coinType);
+			
+		// Assert
+		assertEquals(expectedParkingTime, ps.readDisplay());
+	}
+	
+	/**
 	 * Entering 50 cents should make the display report 20 minutes parking time.
 	 */
 	@Test
