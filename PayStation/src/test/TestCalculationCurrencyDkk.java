@@ -148,7 +148,6 @@ public class TestCalculationCurrencyDkk {
 		
 		coinType = Currency.ValidCoinType.FRACTION;
 		
-		// Act
 		ps.addPayment(coinValue, coinCurrencyEuro, coinType);
 		ps.addPayment(coinValue, coinCurrencyDkk, coinType);
 			

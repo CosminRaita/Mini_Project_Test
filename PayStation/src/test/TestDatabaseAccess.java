@@ -73,13 +73,13 @@ public class TestDatabaseAccess {
 		// Arrange
 		LocalDateTime timeNow = java.time.LocalDateTime.now();
 		
-		
 		double payedCentAmount = 100;
-		
-		tempPBuy = new PBuy();
 		
 		PPayStation pStat = new PPayStation(1, "P-423E");
 		pStat.setAmount(payedCentAmount);
+		
+		tempPBuy = new PBuy();
+		
 		tempPBuy.setAssociatedPaystation(pStat);
 		tempPBuy.setBuyTime(timeNow);
 		
@@ -89,46 +89,42 @@ public class TestDatabaseAccess {
 		tempPBuy.setId(dbPbuy.insertParkingBuy(tempPBuy));
 		
 		
-		
 		Connection con = DBConnection.getInstance().getDBcon();
 		
 		ResultSet rs = con.createStatement().executeQuery("SELECT * FROM PBuy WHERE id=(SELECT max(id) FROM PBuy);");
 
 		rs.next();
 		
-
-		
-		
 		PPayStation payStation = tempPBuy.getAssociatedPaystation();
 		
+		
+		// Assert
 		assertEquals(payStation.getTimeBoughtInMinutes(), Integer.parseInt(rs.getString(3)));
 		assertEquals(payStation.getAmount(), Double.parseDouble(rs.getString(4)), 0);
 		assertEquals(java.sql.Date.valueOf(tempPBuy.getBuyTime().toLocalDate()).toString() + " " 
 		+ java.sql.Time.valueOf(tempPBuy.getBuyTime().toLocalTime()).toString() + ".0", rs.getString(2));
 
-
+		// Cleanup
 		con.createStatement().executeUpdate("DBCC CHECKIDENT ('PBuy', RESEED, " + (tempPBuy.getId()-1) + ")");
-		
-		
 	}	
 	
 	
 	@Test
-	void wasRetrievedPriceControlLayer() {
+	public void wasRetrievedPriceControlLayer() {
 		PPrice pp = controlPrice.getCurrentPrice();
 		assertEquals(24, pp.getParkingPrice());
 	}
 	
 	@Test
-	void wasRetrievedPriceControlLayerZoneId0() {
+	public void wasRetrievedPriceControlLayerZoneId0() {
 		Assertions.assertThrows(DatabaseLayerException.class, () ->{
 			@SuppressWarnings("unused")
 			PPrice pp = controlPrice.getPriceRemote(0);
-			});	
+		});	
 	}
 
 	@Test
-	void wasRetrievedPriceControlLayerZoneId1() {
+	public void wasRetrievedPriceControlLayerZoneId1() {
 		try {
 			PPrice pp = controlPrice.getPriceRemote(1);
 			assertEquals(35, pp.getParkingPrice());
@@ -142,7 +138,7 @@ public class TestDatabaseAccess {
 	}
 	
 	@Test
-	void wasRetrievedPriceControlLayerZoneId2() {
+	public void wasRetrievedPriceControlLayerZoneId2() {
 		try {
 			PPrice pp = controlPrice.getPriceRemote(2);
 			assertEquals(25, pp.getParkingPrice());
@@ -156,7 +152,7 @@ public class TestDatabaseAccess {
 	}
 	
 	@Test
-	void wasRetrievedPriceControlLayerZoneId3() {
+	public void wasRetrievedPriceControlLayerZoneId3() {
 		try {
 			PPrice pp = controlPrice.getPriceRemote(3);
 			assertEquals(15, pp.getParkingPrice());
@@ -170,11 +166,11 @@ public class TestDatabaseAccess {
 	}
 	
 	@Test
-	void wasRetrievedPriceControlLayerZoneId4() {
+	public void wasRetrievedPriceControlLayerZoneId4() {
 		Assertions.assertThrows(DatabaseLayerException.class, () ->{
 			@SuppressWarnings("unused")
 			PPrice pp = controlPrice.getPriceRemote(4);
-			});	
+		});	
 	}
 	
 	
@@ -185,11 +181,11 @@ public class TestDatabaseAccess {
 	}	
 	
 	@Test
-	void wasRetrievedPriceDatabaselLayerZoneId0() {
+	public void wasRetrievedPriceDatabaselLayerZoneId0() {
 		Assertions.assertThrows(DatabaseLayerException.class, () ->{
 			@SuppressWarnings("unused")
 			PPrice pp = databasePPrice.getPriceByZoneId(0);
-			});	
+		});	
 	}
 	
 	@Test
@@ -206,7 +202,7 @@ public class TestDatabaseAccess {
 	}
 	
 	@Test
-	void wasRetrievedPriceDatabaseLayerZoneId2() {
+	public void wasRetrievedPriceDatabaseLayerZoneId2() {
 		try {
 			PPrice pp = databasePPrice.getPriceByZoneId(2);
 			assertEquals(25, pp.getParkingPrice());
@@ -220,7 +216,7 @@ public class TestDatabaseAccess {
 	}
 	
 	@Test
-	void wasRetrievedPriceDatabaseLayerZoneId3() {
+	public void wasRetrievedPriceDatabaseLayerZoneId3() {
 		try {
 			PPrice pp = databasePPrice.getPriceByZoneId(3);
 			assertEquals(15, pp.getParkingPrice());
@@ -234,11 +230,11 @@ public class TestDatabaseAccess {
 	}
 	
 	@Test
-	void wasRetrievedPriceDatabaselLayerZoneId4() {
+	public void wasRetrievedPriceDatabaselLayerZoneId4() {
 		Assertions.assertThrows(DatabaseLayerException.class, () ->{
 			@SuppressWarnings("unused")
 			PPrice pp = databasePPrice.getPriceByZoneId(4);
-			});	
+		});	
 	}
 	
 	/** Fixture for pay station testing. */
