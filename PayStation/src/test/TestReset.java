@@ -1,10 +1,14 @@
 package test;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import controllayer.*;
-import modellayer.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import controllayer.ControlPayStation;
+import controllayer.IllegalCoinException;
+import modellayer.Currency;
 
 /**
  * Inspired by the book: Flexible, Reliable Software Henrik Bærbak Christensen:
@@ -16,7 +20,7 @@ public class TestReset {
 	ControlPayStation ps;
 
 	/** Fixture for pay station testing. */
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ps = new ControlPayStation();
 	}
@@ -64,5 +68,11 @@ public class TestReset {
 		
 		// Assert
 		assertEquals(expectedValue, ps.readDisplay());
+	}
+	
+	/** Fixture for pay station testing. */
+	@AfterEach
+	public void cleanUp() {
+		ps.setReady();
 	}
 }
